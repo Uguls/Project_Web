@@ -1,4 +1,4 @@
-package WebCock.Project_Web.security;
+package WebCock.Project_Web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
