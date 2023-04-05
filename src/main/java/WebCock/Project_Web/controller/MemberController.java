@@ -5,11 +5,13 @@ import WebCock.Project_Web.service.FindPasswordMail;
 import WebCock.Project_Web.service.MemberService;
 import WebCock.Project_Web.service.RegisterMail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
+@Controller
 public class MemberController {
     private final MemberService memberService;
 
@@ -23,12 +25,13 @@ public class MemberController {
     @Autowired
     FindPasswordMail findPasswordMail;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.OPTIONS)
     public int loginMember(@RequestBody Map<String, String> userInfo) {
+        System.out.println(userInfo);
         Member loggedMember = memberService.login(userInfo);
         if (loggedMember != null) {
             System.out.println("SUCCESS");
-            return 1;
+            return 123;
         } else {
             System.out.println("FAIL");
             return -1;
@@ -37,7 +40,9 @@ public class MemberController {
 
     @PostMapping("/register")
     public int registerMember(@RequestBody Map<String, String> userInfo) {
+        System.out.println("TestMessageUserInfo "+userInfo);
         int result = memberService.register(userInfo);
+        System.out.println("TestMessageresult " + result);
         return result;
     }
 

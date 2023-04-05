@@ -7,8 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Arrays.*;
 import java.util.List;
+
 
 @Entity
 @Getter @Setter
@@ -17,16 +19,17 @@ public class Member {
     @Id
     @GeneratedValue
     private long id;                // id
-
-    private String uid;
-
-    @Column(length=200)
     private String upw;
-
+    private String uid;
     private String email;
+    private String roles; //ROLE_USER, ROLE_ADMIN
 
+    public List<String> getRoleList() {
+        if (this.roles.length() > 0) {
+            return Arrays.asList(this.roles.split(","));
+        }
+    }
     public Member() {}
-
     public Member(String uid, String upw) {
         this.uid = uid;
         this.upw = upw;

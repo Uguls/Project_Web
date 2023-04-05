@@ -27,11 +27,12 @@ public class MemberService {
             return -2;
         }
 
-        String RawPassword = userInfo.get("upw");
+        String Encodepassword = passwordEncoder.encode( userInfo.get("upw"));
 
         Member member = new Member();
         member.setUid(userInfo.get("uid"));
-        member.setUpw(RawPassword);
+        member.setEmail(userInfo.get("email"));
+        member.setUpw(Encodepassword);
 
         memberRepository.save(member);
         return 1;
@@ -39,7 +40,7 @@ public class MemberService {
 
     public Member login(Map<String, String> userInfo) {
         Member member = memberRepository.findByUid(userInfo.get("uid"));
-        System.out.println(member);
+        System.out.println("TestMemberMassage: " + member);
         if ((member == null) || !userInfo.get("upw").equals(member.getUpw())) {
             return null;
         }
