@@ -23,7 +23,7 @@ import java.io.IOException;
 // 만약에 권한이나 인증이 필요한 주소가 아니라면 이 필터를 안탐.
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
         super(authenticationManager);
@@ -55,7 +55,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 //        String username =
 //                JWT.require(Algorithm.HMAC256(JwtProperties.SECRET)).build().verify(jwtToken).getClaim("username").asString();
         String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
-                .getClaim("username").asString();
+                .getClaim("uid").asString();
         // 서명이 정상적으로 됨
         if (username != null) {
             Member memberEntity = memberRepository.findByUid(username);

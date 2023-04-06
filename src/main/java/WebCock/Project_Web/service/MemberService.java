@@ -11,10 +11,15 @@ import java.util.Map;
 @Service
 public class MemberService {
 
-    @Autowired
+    final
     MemberRepository memberRepository;
-    @Autowired
+    final
     PasswordEncoder passwordEncoder;
+
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 //    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
 //        this.memberRepository = memberRepository;
