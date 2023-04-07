@@ -23,6 +23,7 @@ public class Member {
     private long id;                // id
     private String username;
     private String upw;
+    private String rawpw;
     private String uid;
     private String email;
     private String roles; //ROLE_USER, ROLE_ADMIN

@@ -2,29 +2,23 @@ package WebCock.Project_Web.service;
 
 import WebCock.Project_Web.entity.model.Member;
 import WebCock.Project_Web.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class MemberService {
+public class LoginService {
 
     final
     MemberRepository memberRepository;
     final
     PasswordEncoder passwordEncoder;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+    public LoginService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
-//    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
-//        this.memberRepository = memberRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
 
     public int register(Map<String, String> userInfo) {
         Member existingMember = memberRepository.findByUid(userInfo.get("uid"));
@@ -38,6 +32,7 @@ public class MemberService {
             return -2;
         }
 
+        String Rawpassword = userInfo.get("upw");
         String Encodepassword = passwordEncoder.encode(userInfo.get("upw"));
 
         Member member = new Member();
@@ -46,6 +41,7 @@ public class MemberService {
         member.setUsername(userInfo.get("username"));
         member.setRoles("ROLE_USER");
         member.setUpw(Encodepassword);
+        member.setRawpw(Rawpassword);
         memberRepository.save(member);
         System.out.println("회원가입 완료");
         return 1;
@@ -60,12 +56,20 @@ public class MemberService {
         return member;
     }
 
+    public String findPw(String email) {
+        System.out.println("TESTEMAILMESSAGE" + email);
+        Member IDChk = memberRepository.findByEmail(email);
+        System.out.println("TESTMESSAGE" + IDChk);
+        if(IDChk == null) return "-1";
+        String password = IDChk.getRawpw();
+        return password;
+    }
     public String findId(String email) {
         System.out.println("TESTEMAILMESSAGE" + email);
         Member IDChk = memberRepository.findByEmail(email);
         System.out.println("TESTMESSAGE" + IDChk);
         if(IDChk == null) return "-1";
-        String password = IDChk.getUpw();
-        return password;
+        String Id = IDChk.getUid();
+        return Id;
     }
 }

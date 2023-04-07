@@ -12,15 +12,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FindPasswordMail implements MailServiceInter {
+public class FindPasswordMailService implements MailServiceInter {
 
     @Autowired
-    MemberService memberService;
+    LoginService loginService;
     @Autowired
     JavaMailSender emailSender; // MailConfig에서 등록해둔 Bean을 autowired하여 사용하기
 
     private String ePw; // 사용자가 메일로 받을 인증번호
-    private String password;
+    private String PwandId;
 
     // 메일 내용 작성
     @Override
@@ -30,7 +30,7 @@ public class FindPasswordMail implements MailServiceInter {
         MimeMessage message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to); // 메일 받을 사용자
-        message.setSubject("[KY_Blog] 비밀번호 입니다"); // 이메일 제목
+        message.setSubject("[KY_Blog] 아이디 및 비밀번호 입니다"); // 이메일 제목
 
         String msgg = "";
         // msgg += "<img src=../resources/static/image/emailheader.jpg />"; // header image
@@ -39,9 +39,9 @@ public class FindPasswordMail implements MailServiceInter {
         msgg += "<br>";
         msgg += "<br>";
         msgg += "<div align='center' style='border:1px solid black'>";
-        msgg += "<h3 style='color:blue'>비밀번호입니다.</h3>";
+        msgg += "<h3 style='color:blue'>아이디 및 비밀번호 입니다.</h3>";
         msgg += "<div style='font-size:130%'>";
-        msgg += "<strong>" + password + "</strong></div><br/>" ; // 메일에 인증번호 ePw 넣기
+        msgg += "<strong>" + PwandId + "</strong></div><br/>" ; // 메일에 인증번호 ePw 넣기
         msgg += "</div>";
         // msgg += "<img src=../resources/static/image/emailfooter.jpg />"; // footer image
 
@@ -58,9 +58,11 @@ public class FindPasswordMail implements MailServiceInter {
     }
 
     @Override
-    public String sendSimpleMessage(String to) throws Exception {
-        password = memberService.findId(to); // "to" 로 비밀번호 찾기
-        MimeMessage message = creatMessage(to); // "to" 로 메일 발송
+    public String sendSimpleMessage(String email) throws Exception {
+        String password = loginService.findPw(email); // "email" 로 비밀번호 찾기
+        String Id = loginService.findId(email);
+        PwandId = "아이디 : " + Id + "패스워드 : " + password;
+        MimeMessage message = creatMessage(email); // "email" 로 메일 발송
 
         try { // 예외처리
             emailSender.send(message);
