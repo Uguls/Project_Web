@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @Controller
+//@RequestMapping(path="/api")
 public class LoginController {
     private final LoginService loginService;
 

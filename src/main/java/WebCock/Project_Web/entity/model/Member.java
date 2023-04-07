@@ -1,16 +1,9 @@
 package WebCock.Project_Web.entity.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Arrays.*;
 import java.util.List;
 
 
@@ -20,12 +13,12 @@ public class Member {
 
     @Id
     @GeneratedValue
-    private long id;                // id
-    private String username;
-    private String upw;
-    private String rawpw;
-    private String uid;
-    private String email;
+    private long id;                // id(PK)
+    private String username;        // 이름
+    private String upw;             // 비밀번호(암호화)
+    private String rawpw;           // 비밀번호
+    private String uid;             // id
+    private String email;           // 이메일
     private String roles; //ROLE_USER, ROLE_ADMIN
 
     public List<String> getRoleList() {
@@ -33,15 +26,5 @@ public class Member {
             return Arrays.asList(this.roles.split(","));
         }
         return new ArrayList<>();
-    }
-
-    public Member() {}
-    public Member(String uid, String upw) {
-        this.uid = uid;
-        this.upw = upw;
-    }
-
-    public static Member create(String uid, String upw) {
-        return new Member(uid, upw);
     }
 }

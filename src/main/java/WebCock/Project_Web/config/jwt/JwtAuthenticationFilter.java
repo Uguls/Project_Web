@@ -2,7 +2,6 @@ package WebCock.Project_Web.config.jwt;
 
 import WebCock.Project_Web.config.auth.PrincipalDetails;
 import WebCock.Project_Web.dto.LoginRequestDto;
-import WebCock.Project_Web.entity.model.Member;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
