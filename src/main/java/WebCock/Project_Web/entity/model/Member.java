@@ -3,17 +3,19 @@ package WebCock.Project_Web.entity.model;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Arrays.*;
 import java.util.List;
 
 
 @Entity
-@Getter @Setter
+@Data
 public class Member {
 
     @Id
@@ -29,7 +31,9 @@ public class Member {
         if (this.roles.length() > 0) {
             return Arrays.asList(this.roles.split(","));
         }
+        return new ArrayList<>();
     }
+
     public Member() {}
     public Member(String uid, String upw) {
         this.uid = uid;

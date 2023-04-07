@@ -1,10 +1,12 @@
 package WebCock.Project_Web.controller;
 
+import WebCock.Project_Web.config.auth.PrincipalDetails;
 import WebCock.Project_Web.entity.model.Member;
 import WebCock.Project_Web.service.FindPasswordMail;
 import WebCock.Project_Web.service.MemberService;
 import WebCock.Project_Web.service.RegisterMail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +27,23 @@ public class MemberController {
     @Autowired
     FindPasswordMail findPasswordMail;
 
-    @RequestMapping(value = "/login", method = RequestMethod.OPTIONS)
+    @GetMapping("user")
+    public String user(Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("principal : "+principal.getMember().getUid());
+        System.out.println("principal : "+principal.getMember().getUsername());
+        System.out.println("principal : "+principal.getMember().getUpw());
+
+        return "<h1>user</h1>";
+    }
+
+    @RequestMapping(value = "/login")
     public int loginMember(@RequestBody Map<String, String> userInfo) {
         System.out.println(userInfo);
         Member loggedMember = memberService.login(userInfo);
         if (loggedMember != null) {
             System.out.println("SUCCESS");
-            return 123;
+            return 1;
         } else {
             System.out.println("FAIL");
             return -1;

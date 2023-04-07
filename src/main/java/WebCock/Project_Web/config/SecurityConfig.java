@@ -2,7 +2,7 @@ package WebCock.Project_Web.config;
 
 import WebCock.Project_Web.config.jwt.JwtAuthenticationFilter;
 import WebCock.Project_Web.config.jwt.JwtAuthorizationFilter;
-import WebCock.Project_Web.filter.MyFilter1;
+//import WebCock.Project_Web.filter.MyFilter1;
 import WebCock.Project_Web.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,8 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .apply(new MyCustomDs1())
                 .and()
-                .authorizeRequests(authorize -> authorize.antMatchers("/user/**")
+                .authorizeRequests(authorize -> authorize
+                        .antMatchers("/user/**")
                         .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                         .antMatchers("/admin")
                         .access("hasRole('ROLE_ADMIN')")

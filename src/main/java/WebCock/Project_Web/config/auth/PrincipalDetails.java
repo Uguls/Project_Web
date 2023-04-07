@@ -11,20 +11,14 @@ import java.util.Collection;
 @Data
 public class PrincipalDetails implements UserDetails {
 
-    private Member member;
+    private final Member member;
 
     public PrincipalDetails(Member member) {
         this.member = member;
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
-        member.getRoleList().forEach(r-> {
-            authorities.add(() -> r);
-        });
-        return authorities;
+    public Member getMember() {
+        return member;
     }
 
     @Override
@@ -55,5 +49,16 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        member.getRoleList().forEach(r-> {
+            authorities.add(() -> {
+                return r;
+            });
+        });
+        return authorities;
     }
 }
