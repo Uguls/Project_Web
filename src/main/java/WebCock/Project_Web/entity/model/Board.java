@@ -1,24 +1,22 @@
 package WebCock.Project_Web.entity.model;
 
 import javax.persistence.*;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
-public class Board{
+@Data
+public class Board {
 
-    @Id @GeneratedValue
-    @Column(name="board_id")
+    @Id // @Id = 기본키 지정
+    @GeneratedValue
     private Long id;
+    private String title;
+    private String content;
 
-    @ManyToOne
-    @JoinColumn(name="member_id")
-    private Member member;
+    private String filename;
 
-    @JoinColumn(name="member_name")
-    private String board_name;
-
-    private String board_number;
-
+    private String filepath;
 }
