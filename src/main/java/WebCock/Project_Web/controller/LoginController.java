@@ -1,12 +1,12 @@
 package WebCock.Project_Web.controller;
 
-import WebCock.Project_Web.config.auth.PrincipalDetails;
-import WebCock.Project_Web.entity.model.Member;
+import WebCock.Project_Web.config.jwt.JwtProperties;
+import WebCock.Project_Web.dto.JwtToken;
 import WebCock.Project_Web.service.FindPasswordMailService;
 import WebCock.Project_Web.service.LoginService;
 import WebCock.Project_Web.service.RegisterMailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,37 +28,25 @@ public class LoginController {
     @Autowired
     FindPasswordMailService findPasswordMailService;
 
-    @GetMapping("user") //유저권한 테스트
-    public String user(Authentication authentication) {
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println("principal : "+principal.getMember().getUid());
-        System.out.println("principal : "+principal.getMember().getUsername());
-        System.out.println("principal : "+principal.getMember().getUpw());
 
+    @GetMapping("user")
+    public String user() {
         return "<h1>user</h1>";
     }
-    @GetMapping("admin") //어드민 권한 테스트
-    public String admin(Authentication authentication) {
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println("principal : "+principal.getMember().getUid());
-        System.out.println("principal : "+principal.getMember().getUsername());
-        System.out.println("principal : "+principal.getMember().getUpw());
-
+    @GetMapping("admin")
+    public String admin() {
         return "<h1>admin</h1>";
     }
 
     @RequestMapping(value = "/login")
     // Json형태로 날아온 값들을 Map으로 묶고 userInfo에 저장
-    public int loginMember(@RequestBody Map<String, String> userInfo) {
-        System.out.println(userInfo);
-        Member loggedMember = loginService.login(userInfo);
-        if (loggedMember != null) {
-            System.out.println("SUCCESS");
-            return 1;
-        } else {
-            System.out.println("FAIL");
-            return -1;
-        }
+    public ResponseEntity<JwtToken> loginSuccess(@RequestBody Map<String, String> loginForm) {
+
+        JwtToken token = loginService.login(loginForm);
+        System.out.println("token == "+token);
+        return ResponseEntity.ok()
+                .header(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token.getAccessToken())
+                .body(token);
     }
 
     @PostMapping("/register")
